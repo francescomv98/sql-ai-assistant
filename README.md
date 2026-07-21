@@ -415,18 +415,6 @@ pytest
 ```
 
 The project includes tests for:
-
 - database initialization;
 - service layer behavior;
 - application components.
-
-## Future Improvements
-
-Possible future improvements:
-- Add conversational memory
-- Support multiple database engines
-- Add SQL query visualization
-- Store query history
-- Add authentication and user management
-- Add integration tests with real LLM calls
-- Migrate LangChain SQL integrations to standalone packages
