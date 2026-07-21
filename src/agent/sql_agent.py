@@ -19,33 +19,44 @@ class SQLAgent:
         logger.info("SQL Agent initialized successfully.")
 
     def _create_agent(self):
+        
         prefix = """
 You are an expert SQL assistant.
 
-Always:
-- Generate valid SQLite SQL.
+Your task is to answer user questions by querying a SQLite database.
+
+Rules:
+
+- Generate only valid SQLite SQL.
 - Never modify the database.
-- Use only SELECT statements.
-- Use the available tables only.
-- Return concise answers.
+- Never use INSERT.
+- Never use UPDATE.
+- Never use DELETE.
+- Never use DROP.
+- Only retrieve the data needed.
+- If the answer cannot be found, say so.
 """
 
         return create_sql_agent(
             llm=self.llm,
             db=self.database,
-            agent_type=AgentType.OPENAI_FUNCTIONS,
+            agent_type="tool-calling",
             verbose=True,
             prefix=prefix
         )
     
     def ask(self, question: str):
 
-        logger.info(f"Question received: {question}")
+        try:
+            logger.info(f"Question received: {question}")
 
-        response = self.agent.invoke(
-            {
-                "input": question
-            }
-        )
+            response = self.agent.invoke(
+                {
+                    "input": question
+                }
+            )
 
-        return response["output"]
+            return response["output"]
+        except Exception as e:
+            logger.error(f"SQL Agent failed: {e}")
+            raise
