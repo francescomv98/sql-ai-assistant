@@ -2,6 +2,8 @@ from langchain_community.agent_toolkits import create_sql_agent
 from src.database.database_manager import DatabaseManager
 from src.llm.openai_client import OpenAIClient
 from src.utils.logger import logger
+import time
+from src.utils.exceptions import SQLAgentError
 
 class SQLAgent:
 
@@ -46,16 +48,22 @@ Rules:
     
     def ask(self, question: str):
 
+        logger.info(f"Question received: {question}")
+        
         try:
-            logger.info(f"Question received: {question}")
+            start_time = time.time()
 
             response = self.agent.invoke(
                 {
                     "input": question
                 }
-            )
+            ) 
+            
+            elapsed_time = time.time() - start_time
+
+            logger.info(f"SQL Agent completed in {elapsed_time:.2f}s")
 
             return response["output"]
         except Exception as e:
-            logger.error(f"SQL Agent failed: {e}")
-            raise
+            logger.error(f"SQL Agent execution failed: {e}")
+            raise SQLAgentError("Unable to process SQL request.") from e

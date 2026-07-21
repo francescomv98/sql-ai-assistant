@@ -12,3 +12,6 @@ class QueryExecutionError(SQLAssistantError):
 
 class LLMError(SQLAssistantError):
     """Raised when the language model fails."""
+
+class SQLAgentError(SQLAssistantError):
+    """Raised when the SQL agent execution fails."""
