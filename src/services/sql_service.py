@@ -2,11 +2,11 @@ from src.agent.sql_agent import SQLAgent
 from src.utils.logger import logger
 from src.utils.exceptions import (QueryExecutionError, SQLAssistantError)
 
-class QueryService:
+class SQLService:
 
     def __init__(self):
 
-        logger.info("Initializing Query Service...")
+        logger.info("Initializing SQLService...")
 
         self.agent = SQLAgent()
 

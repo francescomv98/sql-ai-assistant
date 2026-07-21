@@ -1,4 +1,3 @@
-from langchain.agents import AgentType
 from langchain_community.agent_toolkits import create_sql_agent
 from src.database.database_manager import DatabaseManager
 from src.llm.openai_client import OpenAIClient

@@ -1,22 +1,20 @@
-from sqlalchemy import create_engine
-from langchain_community.utilities import SQLDatabase
-from src.config.settings import settings
-from src.utils.logger import logger
+import logging
 
-class DatabaseManager:
+def setup_logger() -> logging.Logger:
+    logger = logging.getLogger("sql_ai_assistant")
 
-    def __init__(self):
+    if logger.hasHandlers():
+        return logger
 
-        logger.info("Initializing database connection...")
+    logger.setLevel(logging.INFO)
 
-        self.engine = create_engine(f"sqlite:///{settings.database_path}")
+    formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
 
-        self.database = SQLDatabase(self.engine)
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
 
-        logger.info("Database connected successfully.")
+    logger.addHandler(console_handler)
 
-    def get_engine(self):
-        return self.engine
+    return logger
 
-    def get_database(self):
-        return self.database
+logger = setup_logger()
