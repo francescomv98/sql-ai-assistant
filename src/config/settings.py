@@ -1,11 +1,12 @@
 from pathlib import Path
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 class Settings(BaseSettings):
     openai_api_key: str
-    openai_model: str
+    openai_model: str = Field(validation_alias=AliasChoices("CHAT_MODEL", "OPENAI_MODEL"))
     database_path: Path = BASE_DIR / "database" / "sales.db"
     log_level: str = "INFO"
 

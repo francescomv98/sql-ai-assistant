@@ -5,9 +5,13 @@ from src.utils.logger import logger
 
 class DatabaseInitializer:
 
+    def __init__(self, database_path: Path | None = None):
+
+        self.database_path = Path(database_path or settings.database_path)
+
     def initialize(self):
 
-        database_path = Path(settings.database_path)
+        database_path = self.database_path
 
         if database_path.exists():
             logger.info("Database already exists.")
@@ -15,18 +19,27 @@ class DatabaseInitializer:
 
         logger.info("Creating SQLite database...")
 
-        connection = sqlite3.connect(database_path)
+        database_path.parent.mkdir(parents=True, exist_ok=True)
+
+        temp_path = database_path.with_suffix(database_path.suffix + ".tmp")
+        temp_path.unlink(missing_ok=True)
+
+        connection = sqlite3.connect(temp_path)
 
         try:
             self._create_tables(connection)
             self._insert_sample_data(connection)
 
             connection.commit()
-
-            logger.info("Database successfully created.")
-
-        finally:
+        except Exception:
             connection.close()
+            temp_path.unlink(missing_ok=True)
+            raise
+
+        connection.close()
+        temp_path.replace(database_path)
+
+        logger.info("Database successfully created.")
 
     def _create_tables(self, connection):
 

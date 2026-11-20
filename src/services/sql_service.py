@@ -1,4 +1,4 @@
-from src.agent.sql_agent import SQLAgent
+from src.agent.sql_agent import AgentResponse, SQLAgent
 from src.utils.logger import logger
 from src.utils.exceptions import (QueryExecutionError, SQLAssistantError)
 
@@ -10,15 +10,15 @@ class SQLService:
 
         self.agent = SQLAgent()
 
-    def ask(self, question: str) -> str:
+    def ask(self, question: str) -> AgentResponse:
 
-        if not question.strip():
+        if not question or not question.strip():
             raise QueryExecutionError("The question cannot be empty.")
 
         try:
             logger.info("Processing user question...")
 
-            return self.agent.ask(question)
+            return self.agent.ask(question.strip())
         except SQLAssistantError:
             raise
         except Exception as e:

@@ -9,6 +9,9 @@ The goal of this project is to demonstrate the implementation of an AI agent cap
 ## Features
 
 - Natural language database querying
+- Web chat interface built with Streamlit
+- Generated SQL and query results shown alongside each answer
+- Read-only database access for the agent
 - LangChain SQL Agent implementation
 - Automatic SQL query generation
 - Database schema inspection
@@ -297,7 +300,8 @@ The project includes:
 sql-ai-assistant/
 
 │
-├── main.py                         # Application entry point
+├── app.py                          # Streamlit web interface
+├── main.py                         # Command line entry point
 │
 ├── src/
 │   │
@@ -322,6 +326,7 @@ sql-ai-assistant/
 │       └── logger.py                # Logging configuration
 │
 ├── tests/
+│   ├── conftest.py                  # Test environment setup
 │   ├── test_database.py             # Database tests
 │   └── test_sql_service.py          # Service layer tests
 │
@@ -384,11 +389,28 @@ Create a `.env` file in the project root:
 OPENAI_API_KEY=your_openai_api_key
 
 CHAT_MODEL=gpt-4.1-mini
+
+# Optional (default: INFO). Use DEBUG to print the agent reasoning and executed SQL.
+LOG_LEVEL=INFO
 ```
 
 The application uses Pydantic Settings to load configuration values from environment variables.
 
 ## Running the Application
+
+### Web interface
+
+```bash
+streamlit run app.py
+```
+
+The browser opens at `http://localhost:8501`. The interface provides:
+- a chat to ask questions in natural language;
+- the generated SQL query and its result table for every answer;
+- the database schema in the sidebar;
+- example questions to get started.
+
+### Command line
 
 Start the assistant:
 
@@ -416,5 +438,8 @@ pytest
 
 The project includes tests for:
 - database initialization;
+- read-only database access;
 - service layer behavior;
-- application components.
+- SQL query extraction from the agent workflow.
+
+The tests do not call the OpenAI API and do not require a real API key.

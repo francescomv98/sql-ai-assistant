@@ -3,6 +3,8 @@ from src.services.sql_service import SQLService
 from src.utils.exceptions import SQLAssistantError
 from src.utils.logger import logger
 
+EXIT_COMMANDS = {"exit", "quit"}
+
 def main():
 
     logger.info("Starting SQL AI Assistant...")
@@ -13,16 +15,27 @@ def main():
 
     while True:
 
-        question = input("\nAsk a question (or type 'exit'): ")
+        try:
+            question = input("\nAsk a question (or type 'exit'): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
 
-        if question.lower() == "exit":
+        if not question:
+            continue
+
+        if question.lower() in EXIT_COMMANDS:
             break
 
         try:
-            answer = service.ask(question)
+            response = service.ask(question)
+
+            if response.final_query:
+                print("\nSQL:")
+                print(response.final_query)
 
             print("\nAnswer:")
-            print(answer)
+            print(response.answer)
         except SQLAssistantError as e:
             print(f"\nError: {e}")
 

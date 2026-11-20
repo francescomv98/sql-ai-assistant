@@ -1,4 +1,5 @@
 import logging
+from src.config.settings import settings
 
 def setup_logger() -> logging.Logger:
     logger = logging.getLogger("sql_ai_assistant")
@@ -6,7 +7,7 @@ def setup_logger() -> logging.Logger:
     if logger.hasHandlers():
         return logger
 
-    logger.setLevel(logging.INFO)
+    logger.setLevel(settings.log_level.upper())
 
     formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
 
@@ -14,6 +15,7 @@ def setup_logger() -> logging.Logger:
     console_handler.setFormatter(formatter)
 
     logger.addHandler(console_handler)
+    logger.propagate = False
 
     return logger
 
