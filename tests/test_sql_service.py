@@ -52,7 +52,7 @@ def test_extract_queries_keeps_only_executed_sql():
     steps = [
         (SimpleNamespace(tool="sql_db_list_tables", tool_input={}), "customers"),
         (SimpleNamespace(tool="sql_db_query", tool_input={"query": " SELECT 1 "}), "[(1,)]"),
-        (SimpleNamespace(tool="sql_db_query", tool_input="SELECT 2"), "[(2,)]"),
+        (SimpleNamespace(tool="sql_db_query", tool_input="SELECT 2"), "[(2,)]")
     ]
 
     assert SQLAgent._extract_queries(steps) == ["SELECT 1", "SELECT 2"]

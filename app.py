@@ -12,13 +12,13 @@ EXAMPLE_QUESTIONS = [
     "Which customers bought a Laptop?",
     "Which product generated the highest revenue?",
     "What is the total revenue per city?",
-    "How many orders were placed in 2024?",
+    "How many orders were placed in 2024?"
 ]
 
 st.set_page_config(
     page_title="SQL AI Assistant",
     page_icon="🗄️",
-    layout="wide",
+    layout="wide"
 )
 
 
@@ -81,7 +81,7 @@ def render_sidebar(database: DatabaseManager, busy: bool):
                 st.dataframe(
                     pd.DataFrame(columns),
                     width="stretch",
-                    hide_index=True,
+                    hide_index=True
                 )
 
         st.header("Try asking")
@@ -112,7 +112,7 @@ def answer_question(service: SQLService, database: DatabaseManager, question: st
         "content": response.answer,
         "queries": response.queries,
         "table": fetch_result_table(database, response.final_query),
-        "elapsed_time": response.elapsed_time,
+        "elapsed_time": response.elapsed_time
     }
 
 

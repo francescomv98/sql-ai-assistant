@@ -49,9 +49,7 @@ def test_failed_initialization_leaves_no_database(tmp_path, monkeypatch):
 
 def test_run_query_returns_columns_and_rows(database_path):
 
-    columns, rows = DatabaseManager(database_path).run_query(
-        "SELECT name, price FROM products WHERE name = 'Laptop'"
-    )
+    columns, rows = DatabaseManager(database_path).run_query("SELECT name, price FROM products WHERE name = 'Laptop'")
 
     assert columns == ["name", "price"]
     assert rows == [("Laptop", 1200.0)]

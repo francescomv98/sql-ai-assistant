@@ -9,9 +9,7 @@ class DatabaseManager:
 
         path = Path(database_path or settings.database_path).resolve()
 
-        self.engine = create_engine(
-            f"sqlite:///file:{path.as_posix()}?mode=ro&uri=true"
-        )
+        self.engine = create_engine(f"sqlite:///file:{path.as_posix()}?mode=ro&uri=true")
         self.database = SQLDatabase(self.engine)
 
     def get_engine(self):
